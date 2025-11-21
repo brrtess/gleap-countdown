@@ -78,8 +78,8 @@
       padding: 12px 28px;
       border: none;
       border-radius: 24px;
-      background: #25D366;
-      color: #fff;
+      background: rgb(181, 198, 202);   /* cor solicitada */
+      color: #233038;
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
@@ -88,7 +88,7 @@
       display: inline-block;
     }
     #renewBtn:hover { 
-      background: #1ebe57;
+      background: rgb(161, 178, 182);   /* um pouco mais escuro no hover */
     }
   </style>
 </head>
@@ -114,22 +114,18 @@
       if (!input && input !== 0) return null;
       let value = String(input).trim();
 
-      // remove aspas envolventes se existirem
       if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
         value = value.slice(1, -1).trim();
       }
 
-      // epoch em segundos ou milissegundos
       if (/^\d{10}$/.test(value)) return new Date(Number(value) * 1000);
       if (/^\d{13}$/.test(value)) return new Date(Number(value));
 
-      // ISO padrão (YYYY-MM-DDTHH:mm:ssZ)
       if (/^\d{4}-\d{2}-\d{2}T/.test(value)) {
         const d = new Date(value);
         if (!isNaN(d)) return d;
       }
 
-      // Formato solicitado: MM-DD-YYYYTHH:mm[:ss][Z]
       const m = value.match(/^(\d{2})-(\d{2})-(\d{4})[T\s](\d{2}):(\d{2})(?::(\d{2}))?(Z)?$/);
       if (m) {
         const mm = m[1], dd = m[2], yyyy = m[3];
@@ -140,7 +136,6 @@
         if (!isNaN(d)) return d;
       }
 
-      // fallback: deixar o motor do JS tentar
       const d = new Date(value);
       if (!isNaN(d)) return d;
 
@@ -191,7 +186,6 @@
       const tmr = setInterval(tick, 1000);
     }
     
-    /* --- Pega a data de renovação da URL --- */
     const urlParams = new URLSearchParams(window.location.search);
     const renewalDateParam = urlParams.get('renewalAt');
     
